@@ -3,158 +3,570 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Nebula_岚野</title>
-  <meta name="description" content="永远相信美好的事情即将发生">
-  <link rel="stylesheet" href="styles.css">
+  <title>后台管理 - Nebula_岚野</title>
+  <meta name="description" content="后台管理">
+  <link rel="stylesheet" href="../styles.css">
   <!-- Font Awesome 图标 -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    /* 管理后台专用样式 */
+    .admin-wrapper {
+      min-height: 100vh;
+      padding: 24px;
+      background: var(--bg-primary);
+    }
+    .admin-container {
+      max-width: 960px;
+      margin: 0 auto;
+    }
+    .admin-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border);
+    }
+    .admin-nav h1 {
+      font-size: 1.5rem;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .admin-nav h1 i {
+      color: var(--accent);
+    }
+    .admin-nav-links {
+      display: flex;
+      gap: 16px;
+    }
+    .admin-nav-links a {
+      color: var(--text-light);
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: color 0.2s;
+    }
+    .admin-nav-links a:hover {
+      color: var(--accent);
+    }
+
+    /* 自定义下拉框 */
+    .custom-select {
+      position: relative;
+      flex: 1;
+    }
+    .custom-select-trigger {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 12px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      cursor: pointer;
+      font-size: 0.85rem;
+      color: var(--text-primary);
+      transition: border-color 0.2s;
+    }
+    .custom-select-trigger:hover {
+      border-color: var(--accent);
+    }
+    .custom-select-trigger i {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      transition: transform 0.2s;
+    }
+    .custom-select.open .custom-select-trigger i {
+      transform: rotate(180deg);
+    }
+    .custom-select-options {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      margin-top: 4px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0;
+      transition: all 0.25s ease;
+      z-index: 100;
+    }
+    .custom-select.open .custom-select-options {
+      max-height: 280px;
+      overflow-y: auto;
+      opacity: 1;
+    }
+    .custom-select-option {
+      padding: 10px 12px;
+      font-size: 0.85rem;
+      color: var(--text-primary);
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .custom-select-option:hover {
+      background: var(--bg-hover);
+    }
+    .custom-select-option.selected {
+      color: var(--accent);
+      background: var(--accent-bg);
+    }
+
+    /* 赞助设置 */
+    .sponsor-settings {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .sponsor-setting-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .sponsor-setting-item span {
+      width: 80px;
+      font-size: 0.85rem;
+      color: var(--text-light);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .sponsor-setting-item span i {
+      font-size: 1rem;
+    }
+    .sponsor-setting-item input {
+      flex: 1;
+      padding: 8px 12px;
+      font-size: 0.85rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--bg);
+      color: var(--text-primary);
+    }
+    .sponsor-preview-small {
+      width: 40px;
+      height: 40px;
+      border-radius: 6px;
+      overflow: hidden;
+      background: var(--bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .sponsor-preview-small img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* 修改密码区域 */
+    .change-password-section {
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+    }
+    .change-password-section h4 {
+      font-size: 0.9rem;
+      color: var(--text-primary);
+      margin-bottom: 12px;
+    }
+
+    /* 忘记密码相关样式 */
+    .btn-link {
+      background: none;
+      border: none;
+      color: var(--accent);
+      font-size: 0.85rem;
+      cursor: pointer;
+      padding: 8px 0;
+      margin-top: 8px;
+    }
+    .btn-link:hover {
+      text-decoration: underline;
+    }
+    .reset-hint {
+      font-size: 0.8rem;
+      color: var(--text-light);
+      margin-bottom: 16px;
+      text-align: left;
+    }
+    .reset-error {
+      color: #e74c3c;
+      font-size: 0.8rem;
+      min-height: 18px;
+      margin-bottom: 8px;
+    }
+  </style>
 </head>
 <body>
 
-  <!-- 导航栏 -->
-  <nav class="navbar">
-    <a href="#" class="logo" data-page="home">Nebula_岚野</a>
-    <ul class="nav-links">
-      <li><a href="#" data-page="home" class="active"><span class="nav-text">首页</span></a></li>
-      <li><a href="#" data-page="blog"><span class="nav-text">博客</span></a></li>
-      <li><a href="#" data-page="portfolio"><span class="nav-text">作品集</span></a></li>
-      <li><a href="#" data-page="about"><span class="nav-text">关于我</span></a></li>
-      <div class="nav-slider" id="nav-slider"></div>
-    </ul>
-  </nav>
+  <div class="admin-wrapper">
+    <div class="admin-container">
 
-  <!-- 主内容 -->
-  <div class="main-content">
+      <!-- 导航 -->
+      <nav class="admin-nav">
+        <h1><i class="fas fa-cog"></i> 后台管理</h1>
+        <div class="admin-nav-links">
+          <a href="../editor/"><i class="fas fa-pen-nib"></i> 写文章</a>
+          <a href="../" target="_blank"><i class="fas fa-external-link-alt"></i> 查看网站</a>
+          <a href="#" id="logout-link" style="display:none"><i class="fas fa-sign-out-alt"></i> 退出</a>
+        </div>
+      </nav>
 
-    <!-- 首页 -->
-    <div id="page-home" class="page active">
-      <div class="hero">
-        <div class="hero-avatar">
-          <img src="avatar.jpg" alt="Nebula_岚野">
-        </div>
-        <h1 class="name">Nebula_岚野</h1>
-        <p class="bio">永远相信美好的事情即将发生</p>
-        <span class="skill-tag">HTML</span>
-        <div class="social-links">
-          <a href="https://b23.tv/RVOialG" target="_blank" title="哔哩哔哩">
-            <i class="fas fa-tv"></i>
-          </a>
-          <a href="https://v.douyin.com/AZAPJkQtO20/" target="_blank" title="抖音">
-            <i class="fab fa-tiktok"></i>
-          </a>
-          <a href="https://wpa.qq.com/msgrd?v=3&uin=2524033232&site=qq&menu=yes" target="_blank" title="QQ">
-            <i class="fab fa-qq"></i>
-          </a>
-          <a href="mailto:lkr2312@163.com" title="邮箱">
-            <i class="fas fa-envelope"></i>
-          </a>
-        </div>
+      <!-- 登录框 -->
+      <div id="admin-login" class="login-box">
+        <h2><i class="fas fa-lock"></i> 管理员登录</h2>
+        <p class="login-error" id="login-error"></p>
+        <input type="text" id="login-username" placeholder="用户名" autocomplete="off">
+        <input type="password" id="login-password" placeholder="密码" autocomplete="off">
+        <button class="btn btn-primary" id="login-btn">登录</button>
+        <button class="btn btn-link" id="forgot-password-btn">忘记密码？</button>
       </div>
 
-      <!-- 赞助支持 -->
-      <div class="sponsor-section" id="sponsor-section">
-        <h3><i class="fas fa-heart"></i> 赞助支持</h3>
-        <p class="sponsor-desc">如果我的内容对你有帮助，欢迎请我喝杯咖啡 ☕</p>
-        <div class="sponsor-methods" id="sponsor-methods">
-          <!-- 赞助方式由JS渲染 -->
-        </div>
+      <!-- 忘记密码弹窗 -->
+      <div id="forgot-password-modal" class="login-box" style="display:none">
+        <h2><i class="fas fa-key"></i> 重置密码</h2>
+        <p class="reset-hint">请输入管理员用户名和邮箱验证身份</p>
+        <input type="text" id="reset-username" placeholder="用户名" autocomplete="off">
+        <input type="email" id="reset-email" placeholder="验证邮箱" autocomplete="off">
+        <p class="reset-error" id="reset-error"></p>
+        <button class="btn btn-primary" id="reset-verify-btn">验证身份</button>
+        <button class="btn btn-link" id="back-to-login-btn">返回登录</button>
       </div>
-    </div>
 
-    <!-- 博客列表 -->
-    <div id="page-blog" class="page">
-      <h2 class="page-title">博客</h2>
-      <div id="blog-list" class="blog-list"></div>
-    </div>
+      <!-- 设置新密码弹窗 -->
+      <div id="new-password-modal" class="login-box" style="display:none">
+        <h2><i class="fas fa-lock"></i> 设置新密码</h2>
+        <p class="reset-hint">身份验证成功，请设置新密码</p>
+        <input type="password" id="reset-new-password" placeholder="新密码" autocomplete="off">
+        <input type="password" id="reset-confirm-password" placeholder="确认新密码" autocomplete="off">
+        <p class="reset-error" id="new-password-error"></p>
+        <button class="btn btn-primary" id="reset-save-btn">保存新密码</button>
+      </div>
 
-    <!-- 博客详情 -->
-    <div id="page-blog-detail" class="page">
-      <div class="blog-detail">
-        <button class="back-btn" id="blog-back">
-          <i class="fas fa-arrow-left"></i> 返回列表
-        </button>
-        <h1 id="detail-title" class="detail-title"></h1>
-        <p id="detail-meta" class="detail-meta"></p>
-        <div id="detail-tags" class="detail-tags"></div>
-        <div id="detail-body" class="detail-body"></div>
+      <!-- 管理面板 -->
+      <div id="admin-panel" style="display:none">
 
-        <!-- 点赞和评论 -->
-        <div class="article-interactions">
-          <div class="like-section">
-            <button class="like-btn" id="like-btn">
-              <i class="far fa-heart"></i>
-              <span id="like-count">0</span>
-              <span>赞</span>
-            </button>
-          </div>
+        <!-- 站点设置 -->
+        <div class="admin-section" id="site-settings-section">
+          <h3><i class="fas fa-cog"></i> 站点设置</h3>
+          <div class="settings-form">
 
-          <div class="comments-section">
-            <h4><i class="fas fa-comments"></i> 评论 <span id="comment-count">(0)</span></h4>
-            <div class="comment-form">
-              <input type="text" id="comment-name" placeholder="你的昵称" maxlength="20">
-              <textarea id="comment-content" placeholder="写下你的评论..." maxlength="500"></textarea>
-              <button class="btn btn-primary btn-sm" id="comment-submit">
-                <i class="fas fa-paper-plane"></i> 发表评论
+            <!-- 头像 -->
+            <div class="form-group">
+              <label>头像</label>
+              <div class="avatar-upload">
+                <div class="avatar-preview" id="avatar-preview">
+                  <img src="../avatar.jpg" alt="当前头像" id="avatar-preview-img">
+                </div>
+                <div class="avatar-upload-actions">
+                  <input type="file" id="avatar-file-input" accept="image/*" style="display:none">
+                  <button class="btn" id="avatar-upload-btn">
+                    <i class="fas fa-upload"></i> 上传头像
+                  </button>
+                  <input type="text" id="avatar-url-input" placeholder="或输入头像URL">
+                  <button class="btn" id="avatar-url-btn">
+                    <i class="fas fa-link"></i> 使用URL
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- 昵称 -->
+            <div class="form-group">
+              <label for="setting-nickname">昵称</label>
+              <input type="text" id="setting-nickname" placeholder="你的昵称">
+            </div>
+
+            <!-- 签名 -->
+            <div class="form-group">
+              <label for="setting-bio">个性签名</label>
+              <input type="text" id="setting-bio" placeholder="一句话介绍自己">
+            </div>
+
+            <!-- 技能标签 -->
+            <div class="form-group">
+              <label for="setting-skills">技能标签（用逗号分隔）</label>
+              <input type="text" id="setting-skills" placeholder="例如：HTML, CSS, JavaScript">
+            </div>
+
+            <!-- 关于我 -->
+            <div class="form-group">
+              <label for="setting-about">关于我</label>
+              <textarea id="setting-about" placeholder="详细介绍自己..."></textarea>
+            </div>
+
+            <!-- 联系方式 -->
+            <div class="form-group">
+              <label>联系方式</label>
+              <div class="contact-fields">
+                <div class="contact-row">
+                  <i class="fas fa-tv"></i>
+                  <input type="text" id="setting-bilibili" placeholder="哔哩哔哩链接">
+                </div>
+                <div class="contact-row">
+                  <i class="fab fa-tiktok"></i>
+                  <input type="text" id="setting-douyin" placeholder="抖音链接">
+                </div>
+                <div class="contact-row">
+                  <i class="fab fa-qq"></i>
+                  <input type="text" id="setting-qq" placeholder="QQ号码或链接">
+                </div>
+                <div class="contact-row">
+                  <i class="fas fa-envelope"></i>
+                  <input type="text" id="setting-email" placeholder="邮箱地址">
+                </div>
+              </div>
+            </div>
+
+            <!-- 赞助设置 -->
+            <div class="settings-divider"></div>
+            <h4><i class="fas fa-heart"></i> 赞助设置</h4>
+
+            <div class="form-group">
+              <label>赞助描述</label>
+              <input type="text" id="sponsor-desc" placeholder="如果我的内容对你有帮助，欢迎请我喝杯咖啡 ☕">
+            </div>
+
+            <div class="form-group">
+              <label>赞助方式</label>
+              <div class="sponsor-settings">
+                <div class="sponsor-setting-item">
+                  <span><i class="fab fa-alipay"></i> 支付宝</span>
+                  <input type="text" id="sponsor-alipay" placeholder="收款码图片URL">
+                  <div class="sponsor-preview-small" id="alipay-preview"></div>
+                </div>
+                <div class="sponsor-setting-item">
+                  <span><i class="fab fa-weixin"></i> 微信</span>
+                  <input type="text" id="sponsor-wechat" placeholder="收款码图片URL">
+                  <div class="sponsor-preview-small" id="wechat-preview"></div>
+                </div>
+                <div class="sponsor-setting-item">
+                  <span><i class="fab fa-qq"></i> QQ</span>
+                  <input type="text" id="sponsor-qq" placeholder="收款码图片URL">
+                  <div class="sponsor-preview-small" id="qq-preview"></div>
+                </div>
+                <div class="sponsor-setting-item">
+                  <span><i class="fas fa-coffee"></i> 爱发电</span>
+                  <input type="text" id="sponsor-afdian" placeholder="爱发电主页链接">
+                </div>
+              </div>
+            </div>
+
+            <!-- 外观设置 -->
+            <div class="settings-divider"></div>
+            <h4><i class="fas fa-palette"></i> 外观设置</h4>
+
+            <!-- 背景图片 -->
+            <div class="form-group">
+              <label>背景图片</label>
+              <div class="bg-upload">
+                <div class="bg-preview" id="bg-preview">
+                  <div class="bg-preview-placeholder" id="bg-preview-placeholder">
+                    <i class="fas fa-image"></i>
+                    <span>暂无背景图</span>
+                  </div>
+                  <img id="bg-preview-img" style="display:none" alt="背景预览">
+                </div>
+                <div class="bg-upload-actions">
+                  <input type="file" id="bg-file-input" accept="image/*" style="display:none">
+                  <button class="btn btn-sm" id="bg-upload-btn">
+                    <i class="fas fa-upload"></i> 上传图片
+                  </button>
+                  <input type="text" id="bg-url-input" placeholder="或输入图片URL">
+                  <button class="btn btn-sm" id="bg-url-btn">
+                    <i class="fas fa-link"></i> 使用URL
+                  </button>
+                  <button class="btn btn-sm btn-danger" id="bg-remove-btn">
+                    <i class="fas fa-trash"></i> 移除
+                  </button>
+                </div>
+                <div class="bg-options">
+                  <label class="checkbox-label">
+                    <input type="checkbox" id="bg-cover" checked>
+                    <span>铺满整个背景</span>
+                  </label>
+                  <label class="checkbox-label">
+                    <input type="checkbox" id="bg-fixed" checked>
+                    <span>固定不随滚动</span>
+                  </label>
+                  <label class="checkbox-label">
+                    <input type="checkbox" id="bg-blur" checked>
+                    <span>背景模糊</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <!-- 主配色 -->
+            <div class="form-group">
+              <label>主配色</label>
+              <div class="color-fields">
+                <div class="color-row">
+                  <span>背景色</span>
+                  <input type="color" id="color-bg" value="#f0ebe3">
+                  <input type="text" id="color-bg-text" value="#f0ebe3" class="color-hex">
+                </div>
+                <div class="color-row">
+                  <span>卡片色</span>
+                  <input type="color" id="color-card" value="#fffdf7">
+                  <input type="text" id="color-card-text" value="#fffdf7" class="color-hex">
+                </div>
+                <div class="color-row">
+                  <span>文字色</span>
+                  <input type="color" id="color-text" value="#3d3428">
+                  <input type="text" id="color-text-text" value="#3d3428" class="color-hex">
+                </div>
+                <div class="color-row">
+                  <span>强调色</span>
+                  <input type="color" id="color-accent" value="#8b6f4e">
+                  <input type="text" id="color-accent-text" value="#8b6f4e" class="color-hex">
+                </div>
+                <div class="color-row">
+                  <span>边框色</span>
+                  <input type="color" id="color-border" value="#d9cdb8">
+                  <input type="text" id="color-border-text" value="#d9cdb8" class="color-hex">
+                </div>
+              </div>
+              <div class="color-presets">
+                <span class="color-presets-label">预设方案：</span>
+                <button class="color-preset" data-preset="warm" title="暖白复古">🟤</button>
+                <button class="color-preset" data-preset="dark" title="暗夜模式">⬛</button>
+                <button class="color-preset" data-preset="ocean" title="海洋蓝调">🔵</button>
+                <button class="color-preset" data-preset="forest" title="森林绿意">🟢</button>
+                <button class="color-preset" data-preset="sakura" title="樱花粉">🩷</button>
+                <button class="color-preset" data-preset="reset" title="恢复默认">🔄</button>
+              </div>
+            </div>
+
+            <!-- 字体设置 -->
+            <div class="form-group">
+              <label>字体设置</label>
+              <div class="font-fields">
+                <div class="font-row">
+                  <span>字体来源</span>
+                  <select id="font-source">
+                    <option value="preset">预制字体</option>
+                    <option value="upload">上传字体文件</option>
+                  </select>
+                </div>
+                <div class="font-row" id="font-preset-row">
+                  <span>选择字体</span>
+                  <div class="custom-select" id="font-select-container">
+                    <div class="custom-select-trigger" id="font-select-trigger">
+                      <span class="custom-select-text">汉仪文黑85W（默认）</span>
+                      <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="custom-select-options" id="font-select-options">
+                      <div class="custom-select-option selected" data-value="'HYWenHei85W', 'PingFang SC', 'Microsoft YaHei', sans-serif">汉仪文黑85W（默认）</div>
+                      <div class="custom-select-option" data-value="'PingFang SC', 'Microsoft YaHei', sans-serif">华文黑体</div>
+                      <div class="custom-select-option" data-value="'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif">思源黑体</div>
+                      <div class="custom-select-option" data-value="'Noto Serif SC', 'SimSun', serif">思源宋体</div>
+                      <div class="custom-select-option" data-value="'HarmonyOS Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif">鸿蒙黑体</div>
+                      <div class="custom-select-option" data-value="'ZCOOL XiaoWei', serif">站酷小薇</div>
+                      <div class="custom-select-option" data-value="'ZCOOL QingKe HuangYou', sans-serif">站酷庆科黄油</div>
+                      <div class="custom-select-option" data-value="'Ma Shan Zheng', cursive">马善政毛笔楷</div>
+                      <div class="custom-select-option" data-value="'Liu Jian Mao Cao', cursive">流建毛草</div>
+                      <div class="custom-select-option" data-value="'Zhi Mang Xing', cursive">芝麻行书</div>
+                      <div class="custom-select-option" data-value="system-ui, -apple-system, sans-serif">系统默认</div>
+                    </div>
+                  </div>
+                  <input type="hidden" id="font-preset" value="'HYWenHei85W', 'PingFang SC', 'Microsoft YaHei', sans-serif">
+                </div>
+                <div class="font-row" id="font-upload-row" style="display:none">
+                  <span>上传字体</span>
+                  <input type="file" id="font-file-input" accept=".ttf,.otf,.woff,.woff2" style="display:none">
+                  <button class="btn btn-sm" id="font-upload-btn">
+                    <i class="fas fa-upload"></i> 选择字体文件
+                  </button>
+                  <span class="font-file-name" id="font-file-name">未选择文件</span>
+                </div>
+                <div class="font-preview" id="font-preview">
+                  <span>预览：AaBbCc 你好世界 123</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="editor-actions">
+              <button class="btn btn-primary" id="settings-save-btn">
+                <i class="fas fa-save"></i> 保存设置
               </button>
             </div>
-            <div class="comments-list" id="comments-list">
-              <!-- 评论列表由JS渲染 -->
+          </div>
+        </div>
+
+        <!-- 文章编辑器 -->
+        <div class="editor-section" id="editor-section">
+          <h3 id="editor-title">发布新文章</h3>
+          <div class="form-group">
+            <label for="editor-input-title">标题</label>
+            <input type="text" id="editor-input-title" placeholder="文章标题">
+          </div>
+          <div class="form-group">
+            <label for="editor-input-tags">标签（用逗号分隔）</label>
+            <input type="text" id="editor-input-tags" placeholder="例如：游戏, 二次元, 随笔">
+          </div>
+          <div class="form-group">
+            <label for="editor-input-content">内容（支持 Markdown）</label>
+            <textarea id="editor-input-content" placeholder="在这里写文章内容..."></textarea>
+            <p class="editor-hint">支持 Markdown 语法：# 标题、**加粗**、*斜体*、`代码`、- 列表、> 引用</p>
+          </div>
+          <div class="editor-actions">
+            <button class="btn btn-primary" id="editor-save-btn">
+              <i class="fas fa-save"></i> 发布
+            </button>
+            <button class="btn" id="editor-cancel-btn">
+              <i class="fas fa-times"></i> 取消
+            </button>
+          </div>
+        </div>
+
+        <!-- 账号管理 -->
+        <div class="admin-section">
+          <h3>账号管理</h3>
+          <div class="account-form">
+            <h4>添加新账号</h4>
+            <div class="form-row">
+              <input type="text" id="new-account-username" placeholder="用户名" autocomplete="off">
+              <input type="password" id="new-account-password" placeholder="密码" autocomplete="off">
+              <input type="password" id="new-account-confirm" placeholder="确认密码" autocomplete="off">
+              <button class="btn btn-primary" id="add-account-btn">
+                <i class="fas fa-user-plus"></i> 添加
+              </button>
+            </div>
+          </div>
+          <div class="accounts-list" id="admin-accounts-list">
+            <!-- 账号列表由JS渲染 -->
+          </div>
+
+          <!-- 修改密码 -->
+          <div class="change-password-section">
+            <h4>修改当前账号密码</h4>
+            <div class="form-row">
+              <input type="password" id="current-password" placeholder="当前密码" autocomplete="off">
+              <input type="password" id="new-password" placeholder="新密码" autocomplete="off">
+              <input type="password" id="confirm-new-password" placeholder="确认新密码" autocomplete="off">
+              <button class="btn btn-primary" id="change-password-btn">
+                <i class="fas fa-key"></i> 修改
+              </button>
             </div>
           </div>
         </div>
+
+        <!-- 文章列表 -->
+        <div class="admin-list">
+          <h3>已发布文章</h3>
+          <div id="admin-articles"></div>
+        </div>
+
       </div>
-    </div>
 
-    <!-- 作品集 -->
-    <div id="page-portfolio" class="page">
-      <h2 class="page-title">作品集</h2>
-      <div id="portfolio-grid" class="portfolio-grid"></div>
     </div>
-
-    <!-- 关于我 -->
-    <div id="page-about" class="page">
-      <div class="about-section">
-        <div class="about-avatar">
-          <img src="avatar.jpg" alt="Nebula_岚野">
-        </div>
-        <h2>关于我</h2>
-        <p class="about-text">
-          你好，我是 Nebula_岚野。<br>
-          一个喜欢二次元和游戏的人，偶尔写写代码，偶尔画画。<br>
-          相信每一份热爱都值得被认真对待。
-        </p>
-        <p class="skills-title">技能</p>
-        <div class="skills-list">
-          <span class="tag">HTML</span>
-          <span class="tag">CSS</span>
-          <span class="tag">JavaScript</span>
-        </div>
-        <div class="about-social">
-          <h3>找到我</h3>
-          <div class="social-links">
-            <a href="https://b23.tv/RVOialG" target="_blank">
-              <i class="fas fa-tv"></i> 哔哩哔哩
-            </a>
-            <a href="https://v.douyin.com/AZAPJkQtO20/" target="_blank">
-              <i class="fab fa-tiktok"></i> 抖音
-            </a>
-            <a href="https://wpa.qq.com/msgrd?v=3&uin=2524033232&site=qq&menu=yes" target="_blank">
-              <i class="fab fa-qq"></i> QQ
-            </a>
-            <a href="mailto:lkr2312@163.com">
-              <i class="fas fa-envelope"></i> 邮箱
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
-
   </div>
-
-  <!-- 页脚 -->
-  <footer class="footer">
-    &copy; 2025 Nebula_岚野 · 永远相信美好的事情即将发生
-  </footer>
 
   <!-- 提示消息 -->
   <div id="toast" class="toast"></div>
@@ -170,6 +582,6 @@
     </div>
   </div>
 
-  <script src="script.js"></script>
+  <script src="admin.js"></script>
 </body>
 </html>
