@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nebula_岚野</title>
+  <meta name="description" content="永远相信美好的事情即将发生">
+  <link rel="stylesheet" href="styles.css">
+  <!-- Font Awesome 图标 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+
+  <!-- 导航栏 -->
+  <nav class="navbar">
+    <a href="#" class="logo" data-page="home">Nebula_岚野</a>
+    <ul class="nav-links">
+      <li><a href="#" data-page="home" class="active"><span class="nav-text">首页</span></a></li>
+      <li><a href="#" data-page="blog"><span class="nav-text">博客</span></a></li>
+      <li><a href="#" data-page="portfolio"><span class="nav-text">作品集</span></a></li>
+      <li><a href="#" data-page="about"><span class="nav-text">关于我</span></a></li>
+      <div class="nav-slider" id="nav-slider"></div>
+    </ul>
+  </nav>
+
+  <!-- 主内容 -->
+  <div class="main-content">
+
+    <!-- 首页 -->
+    <div id="page-home" class="page active">
+      <div class="hero">
+        <div class="hero-avatar">
+          <img src="avatar.jpg" alt="Nebula_岚野">
+        </div>
+        <h1 class="name">Nebula_岚野</h1>
+        <p class="bio">永远相信美好的事情即将发生</p>
+        <span class="skill-tag">HTML</span>
+        <div class="social-links">
+          <a href="https://b23.tv/RVOialG" target="_blank" title="哔哩哔哩">
+            <i class="fas fa-tv"></i>
+          </a>
+          <a href="https://v.douyin.com/AZAPJkQtO20/" target="_blank" title="抖音">
+            <i class="fab fa-tiktok"></i>
+          </a>
+          <a href="https://wpa.qq.com/msgrd?v=3&uin=2524033232&site=qq&menu=yes" target="_blank" title="QQ">
+            <i class="fab fa-qq"></i>
+          </a>
+          <a href="mailto:lkr2312@163.com" title="邮箱">
+            <i class="fas fa-envelope"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- 赞助支持 -->
+      <div class="sponsor-section" id="sponsor-section">
+        <h3><i class="fas fa-heart"></i> 赞助支持</h3>
+        <p class="sponsor-desc">如果我的内容对你有帮助，欢迎请我喝杯咖啡 ☕</p>
+        <div class="sponsor-methods" id="sponsor-methods">
+          <!-- 赞助方式由JS渲染 -->
+        </div>
+      </div>
+    </div>
+
+    <!-- 博客列表 -->
+    <div id="page-blog" class="page">
+      <h2 class="page-title">博客</h2>
+      <div id="blog-list" class="blog-list"></div>
+    </div>
+
+    <!-- 博客详情 -->
+    <div id="page-blog-detail" class="page">
+      <div class="blog-detail">
+        <button class="back-btn" id="blog-back">
+          <i class="fas fa-arrow-left"></i> 返回列表
+        </button>
+        <h1 id="detail-title" class="detail-title"></h1>
+        <p id="detail-meta" class="detail-meta"></p>
+        <div id="detail-tags" class="detail-tags"></div>
+        <div id="detail-body" class="detail-body"></div>
+
+        <!-- 点赞和评论 -->
+        <div class="article-interactions">
+          <div class="like-section">
+            <button class="like-btn" id="like-btn">
+              <i class="far fa-heart"></i>
+              <span id="like-count">0</span>
+              <span>赞</span>
+            </button>
+          </div>
+
+          <div class="comments-section">
+            <h4><i class="fas fa-comments"></i> 评论 <span id="comment-count">(0)</span></h4>
+            <div class="comment-form">
+              <input type="text" id="comment-name" placeholder="你的昵称" maxlength="20">
+              <textarea id="comment-content" placeholder="写下你的评论..." maxlength="500"></textarea>
+              <button class="btn btn-primary btn-sm" id="comment-submit">
+                <i class="fas fa-paper-plane"></i> 发表评论
+              </button>
+            </div>
+            <div class="comments-list" id="comments-list">
+              <!-- 评论列表由JS渲染 -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 作品集 -->
+    <div id="page-portfolio" class="page">
+      <h2 class="page-title">作品集</h2>
+      <div id="portfolio-grid" class="portfolio-grid"></div>
+    </div>
+
+    <!-- 关于我 -->
+    <div id="page-about" class="page">
+      <div class="about-section">
+        <div class="about-avatar">
+          <img src="avatar.jpg" alt="Nebula_岚野">
+        </div>
+        <h2>关于我</h2>
+        <p class="about-text">
+          你好，我是 Nebula_岚野。<br>
+          一个喜欢二次元和游戏的人，偶尔写写代码，偶尔画画。<br>
+          相信每一份热爱都值得被认真对待。
+        </p>
+        <p class="skills-title">技能</p>
+        <div class="skills-list">
+          <span class="tag">HTML</span>
+          <span class="tag">CSS</span>
+          <span class="tag">JavaScript</span>
+        </div>
+        <div class="about-social">
+          <h3>找到我</h3>
+          <div class="social-links">
+            <a href="https://b23.tv/RVOialG" target="_blank">
+              <i class="fas fa-tv"></i> 哔哩哔哩
+            </a>
+            <a href="https://v.douyin.com/AZAPJkQtO20/" target="_blank">
+              <i class="fab fa-tiktok"></i> 抖音
+            </a>
+            <a href="https://wpa.qq.com/msgrd?v=3&uin=2524033232&site=qq&menu=yes" target="_blank">
+              <i class="fab fa-qq"></i> QQ
+            </a>
+            <a href="mailto:lkr2312@163.com">
+              <i class="fas fa-envelope"></i> 邮箱
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- 页脚 -->
+  <footer class="footer">
+    &copy; 2025 Nebula_岚野 · 永远相信美好的事情即将发生
+  </footer>
+
+  <!-- 提示消息 -->
+  <div id="toast" class="toast"></div>
+
+  <!-- 确认弹窗 -->
+  <div id="modal-overlay" class="modal-overlay">
+    <div class="modal-box">
+      <p id="modal-message"></p>
+      <div class="modal-actions">
+        <button class="btn" id="modal-cancel">取消</button>
+        <button class="btn btn-danger" id="modal-confirm">确认删除</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
