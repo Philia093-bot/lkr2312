@@ -42,7 +42,7 @@ src/
    ```bash
    npm run dev
    ```
-4. 在浏览器打开 http://localhost:5173 即可预览。
+4. 在浏览器打开index.html即可预览。
 
 📃 使用说明
 
